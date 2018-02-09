@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,12 @@ namespace LazyMeter
         public MainWindow()
         {
             InitializeComponent();
+
+            Process[] processes = Process.GetProcesses();
+            foreach (Process p in processes)
+            {
+                    listBox1.Items.Add("Process: " + p.ProcessName + " ID: {1}" + p.Id);
+            }
         }
     }
 }
