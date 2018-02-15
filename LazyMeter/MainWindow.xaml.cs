@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoreLinq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -25,10 +26,12 @@ namespace LazyMeter
         {
             InitializeComponent();
 
-            Process[] processes = Process.GetProcesses();
-            foreach (Process p in processes)
+            var processes = Process.GetProcesses();
+            var uniqueProcesses = processes.DistinctBy(x => x.ProcessName);
+
+            foreach (Process p in uniqueProcesses)
             {
-                    listBox1.Items.Add("Process: " + p.ProcessName + " ID: {1}" + p.Id);
+                    listBox1.Items.Add(p.ProcessName + " - " + p.MainWindowTitle);
             }
         }
     }
