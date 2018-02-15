@@ -41,25 +41,26 @@ namespace LazyMeter
         {
             listBox1.Items.Clear();
             
-            ShowApplicationNames();
+            var applications = GetApplications();
+
+            foreach (RunningApplication elemnt in applications)
+            {
+
+                var listboxitem = new ListBoxItem();
+                listboxitem.Content = elemnt.Name + " - " + elemnt.ProcessID;
+                listBox1.Items.Add(listboxitem);
+
+            }
         }
 
-        private void ShowApplicationNames()
+        private List<RunningApplication> GetApplications()
         {
             AutomationElement rootElement = AutomationElement.RootElement;
             var children = GetChildren(rootElement);
 
+            var apps = children.Where(x => !string.IsNullOrWhiteSpace(x.Current.Name)).Select(x=> new RunningApplication(x.Current.Name,x.Current.ProcessId));
 
-            var apps = children.Where(x => !string.IsNullOrWhiteSpace(x.Current.Name)).Select(x=>x);
-
-            foreach (AutomationElement elemnt in apps)
-            {
-                
-                var listboxitem = new ListBoxItem();
-                listboxitem.Content = elemnt.Current.Name + " - " + elemnt.Current.ProcessId;
-                listBox1.Items.Add(listboxitem);
-                
-            }
+            return apps.ToList();
             
         }
         
