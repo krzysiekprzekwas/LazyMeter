@@ -47,7 +47,8 @@ namespace LazyMeter
             {
 
                 var listboxitem = new ListBoxItem();
-                listboxitem.Content = elemnt.Name + " - " + elemnt.ProcessID;
+
+                listboxitem.Content = elemnt.Name + " - "  + elemnt.Process.ProcessName;
                 listBox1.Items.Add(listboxitem);
 
             }
