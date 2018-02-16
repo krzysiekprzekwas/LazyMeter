@@ -2,7 +2,7 @@
 
 namespace LazyMeter
 {
-    class RunningApplication
+    public class RunningApplication
     {
         public string Name { get; }
         public Process Process { get; }

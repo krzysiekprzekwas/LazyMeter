@@ -24,10 +24,14 @@ namespace LazyMeter
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public List<RunningApplicationLog> RunningApplicationLogList { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
+            RunningApplicationLogList = new List<RunningApplicationLog>();
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -47,7 +51,7 @@ namespace LazyMeter
                 int processId = focused.Current.ProcessId;
                 using (Process process = Process.GetProcessById(processId))
                 {
-                    focusedAppTextBlock.Text = String.Format("  Name: {0}, Process: {2}", name, process.ProcessName);
+                    focusedAppTextBlock.Text = String.Format("  Name: {0}, Process: {1}", name, process.ProcessName);
                 }
             }
 
@@ -61,7 +65,27 @@ namespace LazyMeter
                 listboxitem.Content = elemnt.Name + " - "  + elemnt.Process.ProcessName;
                 listBox1.Items.Add(listboxitem);
 
+                if (RunningApplicationLogList.Any(x=>x.ApplicationName == elemnt.Name))
+                {
+                    var item = RunningApplicationLogList.Where(x => x.ApplicationName == elemnt.Name).FirstOrDefault();
+                    item.AddRunningTime(TimeSpan.FromSeconds(1));
+                }
+                else
+                {
+                    RunningApplicationLogList.Add(new RunningApplicationLog(elemnt));
+                }
             }
+
+            listBox2.Items.Clear();
+
+            foreach (var item in RunningApplicationLogList)
+            {
+                var listboxitem = new ListBoxItem();
+
+                listboxitem.Content = item.ApplicationName + " - " + item.RunningTime;
+                listBox2.Items.Add(listboxitem);
+            }
+            
         }
 
         private List<RunningApplication> GetApplications()
