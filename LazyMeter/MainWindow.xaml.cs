@@ -33,14 +33,24 @@ namespace LazyMeter
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
             timer.Start();
-
-            
         }
 
         void timer_Tick(object sender, EventArgs e)
         {
             listBox1.Items.Clear();
-            
+
+            var focused = AutomationElement.FocusedElement;
+
+            if (focused != null)
+            {
+                string name = focused.Current.Name;
+                int processId = focused.Current.ProcessId;
+                using (Process process = Process.GetProcessById(processId))
+                {
+                    focusedAppTextBlock.Text = String.Format("  Name: {0}, Process: {2}", name, process.ProcessName);
+                }
+            }
+
             var applications = GetApplications();
 
             foreach (RunningApplication elemnt in applications)

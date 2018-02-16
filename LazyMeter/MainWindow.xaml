@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LazyMeter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="403.714" Width="561">
     <Grid>
-        <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="301" Margin="10,10,0,0" VerticalAlignment="Top" Width="499"/>
+        <Label Content="Current focused app" HorizontalAlignment="Left" Margin="309,4,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="auto" MinHeight="300" Margin="10,30,0,0" VerticalAlignment="Top" Width="289"/>
+        <Label Content="All running apps" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="focusedAppTextBlock" Text="?" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="309,35,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
