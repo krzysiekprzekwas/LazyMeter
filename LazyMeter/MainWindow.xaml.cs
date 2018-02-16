@@ -43,6 +43,7 @@ namespace LazyMeter
 
             var applications = GetApplications();
 
+            lblRunningCount.Text = String.Format("Running apps: {0}",applications.Count);
 
             foreach (RunningApplication elemnt in applications)
             {
@@ -63,6 +64,7 @@ namespace LazyMeter
                 }
             }
 
+            lblLogsCount.Text = String.Format("Logged apps: {0}", RunningApplicationLogList.Count);
         }
 
         private void SetFocusedElementInfo(AutomationElement focused)

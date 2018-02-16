@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LazyMeter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="403.714" Width="561">
+        Title="LazyTracker"
+        SizeToContent="WidthAndHeight">
     <Grid>
         <Label Content="Current focused app" HorizontalAlignment="Left" Margin="309,4,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="278" MinHeight="280" Margin="309,87,0,0" VerticalAlignment="Top" Width="236"/>
+        <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="278" MinHeight="280" Margin="309,87,10,0" VerticalAlignment="Top" Width="236"/>
         <Label Content="Current running apps" HorizontalAlignment="Left" Margin="309,56,0,0" VerticalAlignment="Top"/>
         <TextBlock x:Name="focusedAppTextBlock" Text="?" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="309,35,0,0" VerticalAlignment="Top"/>
         <ListView x:Name="listBox2" HorizontalAlignment="Left" Height="330" Margin="10,35,0,0" VerticalAlignment="Top" Width="290">
@@ -21,6 +22,14 @@
             </ListView.View>
         </ListView>
         <Label Content="Running app logs" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top"/>
+        <StatusBar HorizontalAlignment="Stretch"  Margin="0,370,0,0" Height="25" VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <TextBlock Name="lblRunningCount"/>
+            </StatusBarItem>
+            <StatusBarItem >
+                <TextBlock Name="lblLogsCount" />
+            </StatusBarItem>
+        </StatusBar>
 
     </Grid>
 </Window>
