@@ -3,20 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Automation;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace LazyMeter
 {
@@ -26,13 +18,13 @@ namespace LazyMeter
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
-        public List<RunningApplicationLog> RunningApplicationLogList { get; set; }
+        public ObservableCollection<RunningApplicationLog> RunningApplicationLogList { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            RunningApplicationLogList = new List<RunningApplicationLog>();
+            RunningApplicationLogList = new ObservableCollection<RunningApplicationLog>();
             listBox2.ItemsSource = RunningApplicationLogList;
 
             DispatcherTimer timer = new DispatcherTimer();
@@ -50,6 +42,7 @@ namespace LazyMeter
             SetFocusedElementInfo(AutomationElement.FocusedElement);
 
             var applications = GetApplications();
+
 
             foreach (RunningApplication elemnt in applications)
             {
@@ -70,7 +63,6 @@ namespace LazyMeter
                 }
             }
 
-            
         }
 
         private void SetFocusedElementInfo(AutomationElement focused)
