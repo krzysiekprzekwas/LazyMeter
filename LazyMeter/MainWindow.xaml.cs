@@ -16,13 +16,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Automation;
+using System.ComponentModel;
 
 namespace LazyMeter
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
         public List<RunningApplicationLog> RunningApplicationLogList { get; set; }
@@ -39,6 +40,8 @@ namespace LazyMeter
             timer.Tick += timer_Tick;
             timer.Start();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         void timer_Tick(object sender, EventArgs e)
         {
@@ -88,7 +91,9 @@ namespace LazyMeter
             AutomationElement rootElement = AutomationElement.RootElement;
             var children = GetChildren(rootElement);
 
-            var apps = children.Where(x => !string.IsNullOrWhiteSpace(x.Current.Name)).Select(x=> new RunningApplication(x.Current.Name,x.Current.ProcessId));
+            var apps = children.Where(x => !string.IsNullOrWhiteSpace(x.Current.Name))
+                               .DistinctBy(x=>x.Current.ProcessId)
+                               .Select(x=> new RunningApplication(x.Current.Name,x.Current.ProcessId));
 
             return apps.ToList();
             

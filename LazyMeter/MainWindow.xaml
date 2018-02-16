@@ -14,7 +14,8 @@
         <ListView x:Name="listBox2" HorizontalAlignment="Left" Height="330" Margin="10,35,0,0" VerticalAlignment="Top" Width="290">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding ApplicationTitle}" />
+                    <GridViewColumn Header="Title" Width="150" DisplayMemberBinding="{Binding ApplicationTitle}" />
+                    <GridViewColumn Header="Name" Width="50" DisplayMemberBinding="{Binding ApplicationName}" />
                     <GridViewColumn Header="Time" Width="90" DisplayMemberBinding="{Binding RunningTime}" />
                 </GridView>
             </ListView.View>
