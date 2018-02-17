@@ -9,13 +9,14 @@ using System.Windows.Threading;
 using System.Windows.Automation;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace LazyMeter
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
 
         public ObservableCollection<RunningApplicationLog> RunningApplicationLogList { get; set; }
@@ -32,8 +33,6 @@ namespace LazyMeter
             timer.Tick += timer_Tick;
             timer.Start();
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         void timer_Tick(object sender, EventArgs e)
         {
@@ -100,6 +99,11 @@ namespace LazyMeter
             AutomationElement[] elementArray = new AutomationElement[children.Count];
             children.CopyTo(elementArray, 0);
             return elementArray.ToList();
+        }
+
+        private void RemoveNutritionContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            RunningApplicationLogList.Remove((RunningApplicationLog)listBox2.SelectedItem);
         }
     }
 }
