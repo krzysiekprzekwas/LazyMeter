@@ -21,11 +21,14 @@ namespace LazyMeter
 
         public ObservableCollection<RunningApplicationLog> RunningApplicationLogList { get; set; }
 
+        private static List<string> IgnoredProcesses = new List<string> { "LogiOverlay" };
+
         public MainWindow()
         {
             InitializeComponent();
 
             RunningApplicationLogList = new ObservableCollection<RunningApplicationLog>();
+            
             listBox2.ItemsSource = RunningApplicationLogList;
 
             DispatcherTimer timer = new DispatcherTimer();
@@ -85,10 +88,10 @@ namespace LazyMeter
             var children = GetChildren(rootElement);
 
             var apps = children.Where(x => !string.IsNullOrWhiteSpace(x.Current.Name))
-                               .DistinctBy(x=>x.Current.ProcessId)
-                               .Select(x=> new RunningApplication(x.Current.Name,x.Current.ProcessId));
+                               .Select(x=> new RunningApplication(x.Current.Name,x.Current.ProcessId))
+                               .Where(x => !IgnoredProcesses.Contains(x.Process.ProcessName));
 
-            return apps.ToList();
+            return apps.DistinctBy(x => x.ProcessID).ToList();
             
         }
         
