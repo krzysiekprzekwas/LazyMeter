@@ -21,7 +21,8 @@ namespace LazyMeter
 
         public ObservableCollection<RunningApplicationLog> RunningApplicationLogList { get; set; }
 
-        private static List<string> IgnoredProcesses = new List<string> { "LogiOverlay" };
+        private List<string> IgnoredProcessNames = new List<string> { "LogiOverlay" };
+        private List<string> IgnoredNames = new List<string> { "FolderView", "Program Manager" };
 
         public MainWindow()
         {
@@ -35,6 +36,11 @@ namespace LazyMeter
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
             timer.Start();
+        }
+
+        bool FilterUnwantedApp(RunningApplication app)
+        {
+            return IgnoredProcessNames.Contains(app.Process.ProcessName) || IgnoredNames.Contains(app.Name);
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -89,7 +95,7 @@ namespace LazyMeter
 
             var apps = children.Where(x => !string.IsNullOrWhiteSpace(x.Current.Name))
                                .Select(x=> new RunningApplication(x.Current.Name,x.Current.ProcessId))
-                               .Where(x => !IgnoredProcesses.Contains(x.Process.ProcessName));
+                               .Where(x => !FilterUnwantedApp(x));
 
             return apps.DistinctBy(x => x.ProcessID).ToList();
             
