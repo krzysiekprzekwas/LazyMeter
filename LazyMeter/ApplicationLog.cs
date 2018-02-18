@@ -1,17 +1,27 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
 using LazyMeter.Annotations;
 
 namespace LazyMeter
 {
+    [Serializable]
     public class ApplicationLog : INotifyPropertyChanged
     {
+        public ObservableCollection<ApplicationInstance> Members { get; set; }
+
+        public string Name { get; set; }
+
+        public string ProcessName { get; set; }
+
+        [XmlIgnore]
+        public TimeSpan RunningTime { get; set; }
+
         public ApplicationLog()
         {
-            this.Members = new ObservableCollection<ApplicationInstance>();
+            Members = new ObservableCollection<ApplicationInstance>();
         }
 
         public ApplicationLog(string processName)
@@ -21,12 +31,16 @@ namespace LazyMeter
             Members = new ObservableCollection<ApplicationInstance>();
         }
 
-        public string Name { get; set; }
-        public string ProcessName { get; set; }
+        [XmlElement("TimeSinceLastEvent")]
+        public long TimeSinceLastEventTicks
+        {
+            get { return RunningTime.Ticks; }
+            set { RunningTime = new TimeSpan(value); }
+        }
 
-        public TimeSpan RunningTime { get; set; }
 
-        public ObservableCollection<ApplicationInstance> Members { get; set; }
+        #region PropertyChanging
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -34,5 +48,8 @@ namespace LazyMeter
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
+        
     }
 }

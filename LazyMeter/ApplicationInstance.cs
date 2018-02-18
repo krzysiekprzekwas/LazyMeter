@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
@@ -10,18 +9,17 @@ namespace LazyMeter
     [Serializable]
     public class ApplicationInstance : INotifyPropertyChanged
     {
-        public ApplicationInstance()
-        {
-            RunningTime = new TimeSpan();
-        }
-
         public string Title { get; set; }
 
         public string ProcessName { get; set; }
 
         [XmlIgnore]
         public TimeSpan RunningTime { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ApplicationInstance()
+        {
+            RunningTime = new TimeSpan();
+        }
 
         [XmlElement("TimeSinceLastEvent")]
         public long TimeSinceLastEventTicks
@@ -30,10 +28,18 @@ namespace LazyMeter
             set { RunningTime = new TimeSpan(value); }
         }
 
+        #region PropertyChanging
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
+
+
     }
 }
