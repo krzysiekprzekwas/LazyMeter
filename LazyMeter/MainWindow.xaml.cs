@@ -23,7 +23,8 @@ namespace LazyMeter
     {
 
         private List<string> IgnoredProcessNames = new List<string> { "LogiOverlay" };
-        private List<string> IgnoredNames = new List<string> { "FolderView", "Program Manager" };
+        private List<string> IgnoredNames = new List<string> { "FolderView", "Przełącznik zadań" };
+        private List<string> IgnoredClasess = new List<string> { "Progman"};
 
         private static string LOG_PATH = "log.xml";
 
@@ -76,16 +77,16 @@ namespace LazyMeter
 
         bool FilterUnwantedApp(ApplicationInstance app)
         {
-            return IgnoredProcessNames.Contains(app.ProcessName) || IgnoredNames.Contains(app.Title);
+            return IgnoredProcessNames.Contains(app.ProcessName) || IgnoredNames.Contains(app.Title) || IgnoredClasess.Contains(app.ClassName);
         }
 
         void timer_Tick(object sender, EventArgs e)
         {
             listBox1.Items.Clear();
-
-            SetFocusedElementInfo(AutomationElement.FocusedElement);
             
             var instances = GetApplicationInstances();
+
+            SetFocusedElementInfo(instances[0]);
 
             foreach (var instance in instances)
             {
@@ -123,17 +124,16 @@ namespace LazyMeter
             lblLogsCount.Text = String.Format("Logged apps: {0}", ApplicationLogList.Count);
         }
 
-        private void SetFocusedElementInfo(AutomationElement focused)
+        private void SetFocusedElementInfo(ApplicationInstance focused)
         {
-            if (focused != null)
-            {
-                string name = focused.Current.Name;
-                int processId = focused.Current.ProcessId;
-                using (Process process = Process.GetProcessById(processId))
-                {
-                    focusedAppTextBlock.Text = String.Format("  Name: {0}, Process: {1}", name, process.ProcessName);
-                }
-            }
+            var app = ApplicationLogList.First(x => x.Members.Any(y => y.Title == focused.Title));
+
+            var item = app.Members.First(y => y.Title == focused.Title);
+
+            item.FocusTime = item.FocusTime + TimeSpan.FromSeconds(1);
+
+            app.FocusTime = new TimeSpan(app.Members.Sum(x => x.FocusTime.Ticks));
+            
         }
 
         private List<ApplicationInstance> GetApplicationInstances()
@@ -142,9 +142,10 @@ namespace LazyMeter
             var children = GetChildren(rootElement);
 
             var apps = children.Where(x => !string.IsNullOrWhiteSpace(x.Current.Name))
-                .Select(x => new ApplicationInstance()
+                               .Select(x => new ApplicationInstance()
                 {
                     Title = x.Current.Name,
+                    ClassName = x.Current.ClassName,
                     ProcessName = Process.GetProcessById(x.Current.ProcessId).ProcessName
                 });
 

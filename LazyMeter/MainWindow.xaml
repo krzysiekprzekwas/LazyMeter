@@ -20,6 +20,9 @@
                         <TextBlock Text=" (" Foreground="Green" />
                         <TextBlock Text="{Binding RunningTime}" Foreground="Green" />
                         <TextBlock Text=" )" Foreground="Green" />
+                        <TextBlock Text=" (" Foreground="Red" />
+                        <TextBlock Text="{Binding FocusTime}" Foreground="Red" />
+                        <TextBlock Text=" )" Foreground="Red" />
                         <TextBlock Text=" [" Foreground="Blue" />
                         <TextBlock Text="{Binding Members.Count}" Foreground="Blue" />
                         <TextBlock Text="]" Foreground="Blue" />
@@ -31,6 +34,9 @@
                         <TextBlock Text=" (" Foreground="Green" />
                         <TextBlock Text="{Binding RunningTime}" Foreground="Green" />
                         <TextBlock Text=" )" Foreground="Green" />
+                        <TextBlock Text=" (" Foreground="Red" />
+                        <TextBlock Text="{Binding FocusTime}" Foreground="Red" />
+                        <TextBlock Text=" )" Foreground="Red" />
                     </StackPanel>
                 </DataTemplate>
             </TreeView.Resources>

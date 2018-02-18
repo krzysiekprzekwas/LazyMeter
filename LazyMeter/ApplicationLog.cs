@@ -18,6 +18,23 @@ namespace LazyMeter
 
         [XmlIgnore]
         public TimeSpan RunningTime { get; set; }
+        
+        [XmlElement("RunningTime")]
+        public long RunningTimeTicks
+        {
+            get { return RunningTime.Ticks; }
+            set { RunningTime = new TimeSpan(value); }
+        }
+
+        [XmlIgnore]
+        public TimeSpan FocusTime { get; set; }
+
+        [XmlElement("FocusTime")]
+        public long FocusTimeTicks
+        {
+            get { return FocusTime.Ticks; }
+            set { FocusTime = new TimeSpan(value); }
+        }
 
         public ApplicationLog()
         {
@@ -29,13 +46,6 @@ namespace LazyMeter
             ProcessName = processName;
             Name = processName;
             Members = new ObservableCollection<ApplicationInstance>();
-        }
-
-        [XmlElement("TimeSinceLastEvent")]
-        public long TimeSinceLastEventTicks
-        {
-            get { return RunningTime.Ticks; }
-            set { RunningTime = new TimeSpan(value); }
         }
 
 

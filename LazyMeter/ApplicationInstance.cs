@@ -13,19 +13,31 @@ namespace LazyMeter
 
         public string ProcessName { get; set; }
 
+        public string ClassName { get; set; }
+
         [XmlIgnore]
         public TimeSpan RunningTime { get; set; }
+
+        [XmlElement("RunningTime")]
+        public long RunningTimeTicks
+        {
+            get { return RunningTime.Ticks; }
+            set { RunningTime = new TimeSpan(value); }
+        }
+
+        [XmlIgnore]
+        public TimeSpan FocusTime { get; set; }
+
+        [XmlElement("FocusTime")]
+        public long FocusTimeTicks
+        {
+            get { return FocusTime.Ticks; }
+            set { FocusTime = new TimeSpan(value); }
+        }
 
         public ApplicationInstance()
         {
             RunningTime = new TimeSpan();
-        }
-
-        [XmlElement("TimeSinceLastEvent")]
-        public long TimeSinceLastEventTicks
-        {
-            get { return RunningTime.Ticks; }
-            set { RunningTime = new TimeSpan(value); }
         }
 
         #region PropertyChanging
