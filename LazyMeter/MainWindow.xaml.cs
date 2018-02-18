@@ -9,7 +9,9 @@ using System.Windows.Threading;
 using System.Windows.Automation;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
+using System.Xml.Serialization;
 
 namespace LazyMeter
 {
@@ -23,13 +25,30 @@ namespace LazyMeter
         private List<string> IgnoredProcessNames = new List<string> { "LogiOverlay" };
         private List<string> IgnoredNames = new List<string> { "FolderView", "Program Manager" };
 
+        private static string LOG_PATH = "log.xml";
+
         public ObservableCollection<ApplicationLog> ApplicationLogList { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+            
+            try
+            {
+                if (!File.Exists(LOG_PATH))
+                    throw new FileNotFoundException();
 
-            ApplicationLogList = new ObservableCollection<ApplicationLog>();
+                XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<ApplicationLog>));
+                using (TextReader writer = new StreamReader(LOG_PATH))
+                {
+                    ApplicationLogList = (ObservableCollection<ApplicationLog>) serializer.Deserialize(writer);
+                }
+            }
+            catch 
+            {
+
+                ApplicationLogList = new ObservableCollection<ApplicationLog>();
+            }
 
             trvFamilies.ItemsSource = ApplicationLogList;
 
@@ -37,6 +56,22 @@ namespace LazyMeter
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
             timer.Start();
+
+            DispatcherTimer timer2 = new DispatcherTimer();
+            timer2.Interval = TimeSpan.FromSeconds(10);
+            timer2.Tick += timer_Tick2;
+            timer2.Start();
+
+            
+        }
+
+        private void timer_Tick2(object sender, EventArgs e)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<ApplicationLog>));
+            using (TextWriter writer = new StreamWriter(LOG_PATH))
+            {
+                serializer.Serialize(writer,ApplicationLogList);
+            }
         }
 
         bool FilterUnwantedApp(ApplicationInstance app)
