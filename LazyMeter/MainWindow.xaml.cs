@@ -57,6 +57,8 @@ namespace LazyMeter
 
                 listBox1.Items.Add(instance.Title);
 
+                if (FilterUnwantedApp(instance))
+                    continue;
 
                 if (ApplicationLogList.Any(x => x.ProcessName == instance.ProcessName))
                 {
@@ -66,6 +68,7 @@ namespace LazyMeter
                     {
                         var item = log.Members.First(x => x.Title == instance.Title);
                         item.RunningTime = item.RunningTime + TimeSpan.FromSeconds(1);
+                        log.RunningTime = new TimeSpan(log.Members.Sum(x=>x.RunningTime.Ticks));
                     }
                     else
                     {
