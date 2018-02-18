@@ -12,23 +12,26 @@
         <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="278" MinHeight="280" Margin="309,87,10,0" VerticalAlignment="Top" Width="236"/>
         <Label Content="Current running apps" HorizontalAlignment="Left" Margin="309,56,0,0" VerticalAlignment="Top"/>
         <TextBlock x:Name="focusedAppTextBlock" Text="?" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="309,35,0,0" VerticalAlignment="Top"/>
-        <ListView x:Name="listBox2" HorizontalAlignment="Left" Height="330" Margin="10,35,0,0" VerticalAlignment="Top" Width="290">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Title" Width="150" DisplayMemberBinding="{Binding ApplicationTitle}" />
-                    <GridViewColumn Header="Name" Width="50" DisplayMemberBinding="{Binding ApplicationName}" />
-                    <GridViewColumn Header="Time" Width="90" DisplayMemberBinding="{Binding RunningTime}" />
-                </GridView>
-            </ListView.View>
-            <ListView.ContextMenu>
-                <ContextMenu Name="ZoneIformationList" StaysOpen="true" Background="WhiteSmoke">
-                    <ContextMenu.BitmapEffect>
-                        <BitmapEffectGroup/>
-                    </ContextMenu.BitmapEffect>
-                    <MenuItem Header="Remove" Name="RemoveNutritionContextMenu" Click="RemoveNutritionContextMenu_Click"/>
-                </ContextMenu>
-            </ListView.ContextMenu>
-        </ListView>
+        <TreeView Name="trvFamilies" Width="300" Margin="0,35,250.857,29.857">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type local:ApplicationLog}" ItemsSource="{Binding Members}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text=" [" Foreground="Blue" />
+                        <TextBlock Text="{Binding Members.Count}" Foreground="Blue" />
+                        <TextBlock Text="]" Foreground="Blue" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type local:ApplicationInstance}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Title}" />
+                        <TextBlock Text=" (" Foreground="Green" />
+                        <TextBlock Text="{Binding RunningTime}" Foreground="Green" />
+                        <TextBlock Text=" years)" Foreground="Green" />
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.Resources>
+        </TreeView>
         <Label Content="Running app logs" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top"/>
         <StatusBar HorizontalAlignment="Stretch"  Margin="0,370,0,0" Height="25" VerticalAlignment="Bottom">
             <StatusBarItem>

@@ -13,24 +13,25 @@ using System.Windows.Input;
 
 namespace LazyMeter
 {
+    
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
 
-        public ObservableCollection<RunningApplicationLog> RunningApplicationLogList { get; set; }
-
         private List<string> IgnoredProcessNames = new List<string> { "LogiOverlay" };
         private List<string> IgnoredNames = new List<string> { "FolderView", "Program Manager" };
+
+        public ObservableCollection<ApplicationLog> ApplicationLogList { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            RunningApplicationLogList = new ObservableCollection<RunningApplicationLog>();
-            
-            listBox2.ItemsSource = RunningApplicationLogList;
+            ApplicationLogList = new ObservableCollection<ApplicationLog>();
+
+            trvFamilies.ItemsSource = ApplicationLogList;
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -38,9 +39,9 @@ namespace LazyMeter
             timer.Start();
         }
 
-        bool FilterUnwantedApp(RunningApplication app)
+        bool FilterUnwantedApp(ApplicationInstance app)
         {
-            return IgnoredProcessNames.Contains(app.Process.ProcessName) || IgnoredNames.Contains(app.Name);
+            return IgnoredProcessNames.Contains(app.ProcessName) || IgnoredNames.Contains(app.Title);
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -48,31 +49,40 @@ namespace LazyMeter
             listBox1.Items.Clear();
 
             SetFocusedElementInfo(AutomationElement.FocusedElement);
+            
+            var instances = GetApplicationInstances();
 
-            var applications = GetApplications();
-
-            lblRunningCount.Text = String.Format("Running apps: {0}",applications.Count);
-
-            foreach (RunningApplication elemnt in applications)
+            foreach (var instance in instances)
             {
 
-                var listboxitem = new ListBoxItem();
+                listBox1.Items.Add(instance.Title);
 
-                listboxitem.Content = elemnt.Name + " - "  + elemnt.Process.ProcessName;
-                listBox1.Items.Add(listboxitem);
 
-                if (RunningApplicationLogList.Any(x=>x.ApplicationName == elemnt.Process.ProcessName))
+                if (ApplicationLogList.Any(x => x.ProcessName == instance.ProcessName))
                 {
-                    var item = RunningApplicationLogList.Where(x => x.ApplicationName == elemnt.Process.ProcessName).FirstOrDefault();
-                    item.AddRunningTime(TimeSpan.FromSeconds(1));
+                    var log = ApplicationLogList.First(x => x.ProcessName == instance.ProcessName);
+
+                    if (log.Members.Any(x=> x.Title == instance.Title))
+                    {
+                        var item = log.Members.First(x => x.Title == instance.Title);
+                        item.RunningTime = item.RunningTime + TimeSpan.FromSeconds(1);
+                    }
+                    else
+                    {
+                        log.Members.Add(instance);
+                    }
                 }
                 else
                 {
-                    RunningApplicationLogList.Add(new RunningApplicationLog(elemnt));
+                    var family2 = new ApplicationLog(instance.ProcessName);
+                    family2.Members.Add(new ApplicationInstance() { Title = instance.Title, RunningTime = new TimeSpan() });
+                    ApplicationLogList.Add(family2);
                 }
             }
 
-            lblLogsCount.Text = String.Format("Logged apps: {0}", RunningApplicationLogList.Count);
+            lblRunningCount.Text = String.Format("Running apps: {0}", instances.Count);
+
+            lblLogsCount.Text = String.Format("Logged apps: {0}", ApplicationLogList.Count);
         }
 
         private void SetFocusedElementInfo(AutomationElement focused)
@@ -88,19 +98,22 @@ namespace LazyMeter
             }
         }
 
-        private List<RunningApplication> GetApplications()
+        private List<ApplicationInstance> GetApplicationInstances()
         {
             AutomationElement rootElement = AutomationElement.RootElement;
             var children = GetChildren(rootElement);
 
             var apps = children.Where(x => !string.IsNullOrWhiteSpace(x.Current.Name))
-                               .Select(x=> new RunningApplication(x.Current.Name,x.Current.ProcessId))
-                               .Where(x => !FilterUnwantedApp(x));
+                .Select(x => new ApplicationInstance()
+                {
+                    Title = x.Current.Name,
+                    ProcessName = Process.GetProcessById(x.Current.ProcessId).ProcessName
+                });
 
-            return apps.DistinctBy(x => x.ProcessID).ToList();
-            
+            return apps.ToList();
+
         }
-        
+
         public List<AutomationElement> GetChildren(AutomationElement parent)
         {
             System.Windows.Automation.Condition findCondition = new PropertyCondition(AutomationElement.IsControlElementProperty, true);
@@ -108,11 +121,6 @@ namespace LazyMeter
             AutomationElement[] elementArray = new AutomationElement[children.Count];
             children.CopyTo(elementArray, 0);
             return elementArray.ToList();
-        }
-
-        private void RemoveNutritionContextMenu_Click(object sender, RoutedEventArgs e)
-        {
-            RunningApplicationLogList.Remove((RunningApplicationLog)listBox2.SelectedItem);
         }
     }
 }
