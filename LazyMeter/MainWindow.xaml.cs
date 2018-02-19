@@ -141,8 +141,19 @@ namespace LazyMeter
             AutomationElement rootElement = AutomationElement.RootElement;
             var children = GetChildren(rootElement);
 
-            var apps = children.Where(x => !string.IsNullOrWhiteSpace(x.Current.Name))
-                               .Select(x => new ApplicationInstance()
+            var apps = children.Where(x =>
+                {
+                    // Possible NullException when one off apps will close in meantime
+                    try
+                    {
+                        return !string.IsNullOrWhiteSpace(x.Current.Name);
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                })
+                .Select(x => new ApplicationInstance()
                 {
                     Title = x.Current.Name,
                     ClassName = x.Current.ClassName,
