@@ -51,7 +51,7 @@ namespace LazyMeter
                 ApplicationLogList = new ObservableCollection<ApplicationLog>();
             }
 
-            trvFamilies.ItemsSource = ApplicationLogList;
+            ApplicationsTreeView.ItemsSource = ApplicationLogList;
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -171,6 +171,34 @@ namespace LazyMeter
             AutomationElement[] elementArray = new AutomationElement[children.Count];
             children.CopyTo(elementArray, 0);
             return elementArray.ToList();
+        }
+
+        private void DeleteApplicationLog_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem mnu)
+            {
+                var sp = ((ContextMenu)mnu.Parent).PlacementTarget as StackPanel;
+
+                var log = (ApplicationLog)sp.DataContext;
+
+                ApplicationLogList.Remove(log);
+            }
+        }
+
+        private void DeleteApplicationInstance_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem mnu)
+            {
+                var sp = ((ContextMenu)mnu.Parent).PlacementTarget as StackPanel;
+
+                var instance = (ApplicationInstance)sp.DataContext;
+
+                var app = ApplicationLogList.First(x => x.Members.Contains(instance));
+
+                app.Members.Remove(instance);
+
+                app.RunningTime = new TimeSpan(app.Members.Sum(x => x.RunningTime.Ticks));
+            }
         }
     }
 }

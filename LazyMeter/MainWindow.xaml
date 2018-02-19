@@ -12,10 +12,15 @@
         <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="278" MinHeight="280" Margin="309,87,10,0" VerticalAlignment="Top" Width="236"/>
         <Label Content="Current running apps" HorizontalAlignment="Left" Margin="309,56,0,0" VerticalAlignment="Top"/>
         <TextBlock x:Name="focusedAppTextBlock" Text="?" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="309,35,0,0" VerticalAlignment="Top"/>
-        <TreeView Name="trvFamilies" Width="300" Margin="0,35,250.857,29.857">
+        <TreeView Name="ApplicationsTreeView" Width="300" Margin="0,35,250.857,29.857">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type local:ApplicationLog}" ItemsSource="{Binding Members}">
                     <StackPanel Orientation="Horizontal">
+                        <StackPanel.ContextMenu>
+                            <ContextMenu StaysOpen="true">
+                                <MenuItem Header="Delete" Click="DeleteApplicationLog_Click"/>
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
                         <TextBlock Text="{Binding Name}" />
                         <TextBlock Text=" (" Foreground="Green" />
                         <TextBlock Text="{Binding RunningTime}" Foreground="Green" />
@@ -30,6 +35,11 @@
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type local:ApplicationInstance}">
                     <StackPanel Orientation="Horizontal">
+                        <StackPanel.ContextMenu>
+                            <ContextMenu StaysOpen="true">
+                                <MenuItem Header="Delete" Click="DeleteApplicationInstance_Click"/>
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
                         <TextBlock Text="{Binding Title}" />
                         <TextBlock Text=" (" Foreground="Green" />
                         <TextBlock Text="{Binding RunningTime}" Foreground="Green" />
