@@ -19,6 +19,7 @@
                         <StackPanel.ContextMenu>
                             <ContextMenu StaysOpen="true">
                                 <MenuItem Header="Delete" Click="DeleteApplicationLog_Click"/>
+                                <MenuItem Header="Rename" Click="RenameApplicationLog_Click"/>
                             </ContextMenu>
                         </StackPanel.ContextMenu>
                         <TextBlock Text="{Binding Name}" />

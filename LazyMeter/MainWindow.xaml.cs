@@ -12,19 +12,20 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Input;
 using System.Xml.Serialization;
+using Microsoft.VisualBasic;
 
 namespace LazyMeter
 {
-    
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
 
-        private List<string> IgnoredProcessNames = new List<string> { "LogiOverlay" };
-        private List<string> IgnoredNames = new List<string> { "FolderView", "Przełącznik zadań" };
-        private List<string> IgnoredClasess = new List<string> { "Progman"};
+        private List<string> IgnoredProcessNames = new List<string> {"LogiOverlay"};
+        private List<string> IgnoredNames = new List<string> {"FolderView", "Przełącznik zadań"};
+        private List<string> IgnoredClasess = new List<string> {"Progman"};
 
         private static string LOG_PATH = "log.xml";
 
@@ -33,7 +34,7 @@ namespace LazyMeter
         public MainWindow()
         {
             InitializeComponent();
-            
+
             try
             {
                 if (!File.Exists(LOG_PATH))
@@ -45,7 +46,7 @@ namespace LazyMeter
                     ApplicationLogList = (ObservableCollection<ApplicationLog>) serializer.Deserialize(writer);
                 }
             }
-            catch 
+            catch
             {
 
                 ApplicationLogList = new ObservableCollection<ApplicationLog>();
@@ -63,7 +64,7 @@ namespace LazyMeter
             timer2.Tick += timer_Tick2;
             timer2.Start();
 
-            
+
         }
 
         private void timer_Tick2(object sender, EventArgs e)
@@ -71,19 +72,20 @@ namespace LazyMeter
             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<ApplicationLog>));
             using (TextWriter writer = new StreamWriter(LOG_PATH))
             {
-                serializer.Serialize(writer,ApplicationLogList);
+                serializer.Serialize(writer, ApplicationLogList);
             }
         }
 
         bool FilterUnwantedApp(ApplicationInstance app)
         {
-            return IgnoredProcessNames.Contains(app.ProcessName) || IgnoredNames.Contains(app.Title) || IgnoredClasess.Contains(app.ClassName);
+            return IgnoredProcessNames.Contains(app.ProcessName) || IgnoredNames.Contains(app.Title) ||
+                   IgnoredClasess.Contains(app.ClassName);
         }
 
         void timer_Tick(object sender, EventArgs e)
         {
             listBox1.Items.Clear();
-            
+
             var instances = GetApplicationInstances();
 
             SetFocusedElementInfo(instances[0]);
@@ -100,11 +102,11 @@ namespace LazyMeter
                 {
                     var log = ApplicationLogList.First(x => x.ProcessName == instance.ProcessName);
 
-                    if (log.Members.Any(x=> x.Title == instance.Title))
+                    if (log.Members.Any(x => x.Title == instance.Title))
                     {
                         var item = log.Members.First(x => x.Title == instance.Title);
                         item.RunningTime = item.RunningTime + TimeSpan.FromSeconds(1);
-                        log.RunningTime = new TimeSpan(log.Members.Sum(x=>x.RunningTime.Ticks));
+                        log.RunningTime = new TimeSpan(log.Members.Sum(x => x.RunningTime.Ticks));
                     }
                     else
                     {
@@ -114,7 +116,8 @@ namespace LazyMeter
                 else
                 {
                     var family2 = new ApplicationLog(instance.ProcessName);
-                    family2.Members.Add(new ApplicationInstance() { Title = instance.Title, RunningTime = new TimeSpan() });
+                    family2.Members.Add(
+                        new ApplicationInstance() {Title = instance.Title, RunningTime = new TimeSpan()});
                     ApplicationLogList.Add(family2);
                 }
             }
@@ -133,7 +136,7 @@ namespace LazyMeter
             item.FocusTime = item.FocusTime + TimeSpan.FromSeconds(1);
 
             app.FocusTime = new TimeSpan(app.Members.Sum(x => x.FocusTime.Ticks));
-            
+
         }
 
         private List<ApplicationInstance> GetApplicationInstances()
@@ -166,7 +169,8 @@ namespace LazyMeter
 
         public List<AutomationElement> GetChildren(AutomationElement parent)
         {
-            System.Windows.Automation.Condition findCondition = new PropertyCondition(AutomationElement.IsControlElementProperty, true);
+            System.Windows.Automation.Condition findCondition =
+                new PropertyCondition(AutomationElement.IsControlElementProperty, true);
             AutomationElementCollection children = parent.FindAll(TreeScope.Children, findCondition);
             AutomationElement[] elementArray = new AutomationElement[children.Count];
             children.CopyTo(elementArray, 0);
@@ -177,9 +181,9 @@ namespace LazyMeter
         {
             if (sender is MenuItem mnu)
             {
-                var sp = ((ContextMenu)mnu.Parent).PlacementTarget as StackPanel;
+                var sp = ((ContextMenu) mnu.Parent).PlacementTarget as StackPanel;
 
-                var log = (ApplicationLog)sp.DataContext;
+                var log = (ApplicationLog) sp.DataContext;
 
                 ApplicationLogList.Remove(log);
             }
@@ -189,15 +193,30 @@ namespace LazyMeter
         {
             if (sender is MenuItem mnu)
             {
-                var sp = ((ContextMenu)mnu.Parent).PlacementTarget as StackPanel;
+                var sp = ((ContextMenu) mnu.Parent).PlacementTarget as StackPanel;
 
-                var instance = (ApplicationInstance)sp.DataContext;
+                var instance = (ApplicationInstance) sp.DataContext;
 
                 var app = ApplicationLogList.First(x => x.Members.Contains(instance));
 
                 app.Members.Remove(instance);
 
                 app.RunningTime = new TimeSpan(app.Members.Sum(x => x.RunningTime.Ticks));
+            }
+        }
+
+        private void RenameApplicationLog_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem mnu)
+            {
+                var sp = ((ContextMenu) mnu.Parent).PlacementTarget as StackPanel;
+
+                var log = (ApplicationLog) sp.DataContext;
+
+                var newName = Interaction.InputBox("Provide new application name", "Rename " + log.ProcessName, log.Name);
+
+                if (!string.IsNullOrWhiteSpace(newName))
+                    log.Name = newName;
             }
         }
     }
