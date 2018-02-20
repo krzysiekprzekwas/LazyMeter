@@ -65,7 +65,23 @@ namespace LazyMeter
             timer2.Tick += timer_Tick2;
             timer2.Start();
 
+            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
+            ni.Icon = new System.Drawing.Icon("icon.ico");
+            ni.Visible = true;
+            ni.DoubleClick +=
+                delegate
+                {
+                    Show();
+                    WindowState = WindowState.Normal;
+                };
+        }
 
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (WindowState == System.Windows.WindowState.Minimized)
+                this.Hide();
+
+            base.OnStateChanged(e);
         }
 
         private void timer_Tick2(object sender, EventArgs e)
