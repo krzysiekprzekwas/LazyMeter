@@ -84,19 +84,24 @@ namespace LazyMeter
 
         void timer_Tick(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
 
             var instances = GetApplicationInstances();
 
-            SetFocusedElementInfo(instances[0]);
+            listBox1.ItemsSource = instances.Select(x => x.Title);
 
-            foreach (var instance in instances)
+            try
             {
+                SetFocusedElementInfo(instances[0]);
+            }
+            catch (InvalidOperationException exception)
+            {
+                Console.WriteLine(exception);
+            }
 
-                listBox1.Items.Add(instance.Title);
+            var filteredInstances = instances.Where(x => !FilterUnwantedApp(x));
 
-                if (FilterUnwantedApp(instance))
-                    continue;
+            foreach (var instance in filteredInstances)
+            {
 
                 if (ApplicationLogList.Any(x => x.ProcessName == instance.ProcessName))
                 {
@@ -121,6 +126,8 @@ namespace LazyMeter
                     ApplicationLogList.Add(family2);
                 }
             }
+
+            ApplicationLogList = new ObservableCollection<ApplicationLog>(ApplicationLogList.OrderByDescending(x => x.FocusTime).ToList());
 
             lblRunningCount.Text = String.Format("Running apps: {0}", instances.Count);
 
