@@ -38,6 +38,11 @@
                     <StackPanel Orientation="Horizontal">
                         <StackPanel.ContextMenu>
                             <ContextMenu StaysOpen="true">
+                                <MenuItem Header="Set as ...">
+                                    <MenuItem Header="Fun" Click="SetTypeApplicationLog_Click"/>
+                                    <MenuItem Header="Work" Click="SetTypeApplicationLog_Click"/>
+                                    <MenuItem Header="Univeristy" Click="SetTypeApplicationLog_Click"/>
+                                </MenuItem>
                                 <MenuItem Header="Delete" Click="DeleteApplicationInstance_Click"/>
                             </ContextMenu>
                         </StackPanel.ContextMenu>

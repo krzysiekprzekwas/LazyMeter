@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using LazyMeter.Annotations;
+using LazyMeter.Data;
 
 namespace LazyMeter
 {
@@ -14,6 +15,9 @@ namespace LazyMeter
         public string ProcessName { get; set; }
 
         public string ClassName { get; set; }
+
+        public ActivityType Type { get; set; }
+
 
         [XmlIgnore]
         public TimeSpan RunningTime { get; set; }
@@ -38,6 +42,7 @@ namespace LazyMeter
         public ApplicationInstance()
         {
             RunningTime = new TimeSpan();
+            Type = ActivityType.Other;
         }
 
         #region PropertyChanging

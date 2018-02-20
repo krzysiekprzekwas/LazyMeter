@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Input;
 using System.Xml.Serialization;
+using LazyMeter.Data;
 using Microsoft.VisualBasic;
 
 namespace LazyMeter
@@ -224,6 +225,37 @@ namespace LazyMeter
 
                 if (!string.IsNullOrWhiteSpace(newName))
                     log.Name = newName;
+            }
+        }
+
+        private void SetTypeApplicationLog_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem mnu)
+            {
+                var sp = ((ContextMenu)((MenuItem)mnu.Parent).Parent).PlacementTarget as StackPanel;
+
+                var instance = (ApplicationInstance)sp.DataContext;
+
+                var type = (string)mnu.Header;
+
+                switch (type)
+                {
+                    case "Fun":
+                        instance.Type = ActivityType.Fun;
+                        break;
+                    case "Work":
+                        instance.Type = ActivityType.Work;
+                        break;
+                    case "Univeristy":
+                        instance.Type = ActivityType.Univeristy;
+                        break;
+                    case "Learning":
+                        instance.Type = ActivityType.Learning;
+                        break;
+                    default:
+                        instance.Type = ActivityType.Other;
+                        break;
+                }
             }
         }
     }
