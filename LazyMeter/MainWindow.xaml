@@ -4,17 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LazyMeter"
+        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="LazyTracker"
         SizeToContent="WidthAndHeight"
-        >
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf">
     <Window.Resources>
         <local:ActivityTypeToColorConverter x:Key="ActivityTypeToColorConverter"/>
     </Window.Resources>
     <Grid Width="650" Height="500">
-        <TabControl>
+        <TabControl SelectionChanged="TabSelectionChanged">
             <TabItem Header="Activity" />
-            <TabItem Header="Applications" />
+            <TabItem Header="Applications">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <wpf:PieChart x:Name="Chart" Grid.Row="1" LegendLocation="Right" InnerRadius="100" Margin="0 15">
+                        <lvc:PieChart.ChartLegend>
+                            <lvc:DefaultLegend BulletSize="20"></lvc:DefaultLegend>
+                        </lvc:PieChart.ChartLegend>
+                        <wpf:PieChart.DataTooltip>
+                            <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
+                        </wpf:PieChart.DataTooltip>
+                    </wpf:PieChart>
+                </Grid>
+            </TabItem>
             <TabItem Header="Details">
                 <Grid>
                     <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="406" MinHeight="280" Margin="378,35,0,0" VerticalAlignment="Top" Width="256"/>

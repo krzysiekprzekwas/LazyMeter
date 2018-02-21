@@ -13,6 +13,10 @@ using System.IO;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using LazyMeter.Data;
+using LiveCharts;
+using LiveCharts.Configurations;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using Microsoft.VisualBasic;
 
 namespace LazyMeter
@@ -65,7 +69,9 @@ namespace LazyMeter
             timer2.Tick += timer_Tick2;
             timer2.Start();
 
-            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
+            #region NotifyIcon
+
+            var ni = new System.Windows.Forms.NotifyIcon();
             ni.Icon = new System.Drawing.Icon("icon.ico");
             ni.Visible = true;
             ni.DoubleClick +=
@@ -74,7 +80,11 @@ namespace LazyMeter
                     Show();
                     WindowState = WindowState.Normal;
                 };
+            
+            #endregion
         }
+        
+        public SeriesCollection ChartValues { get; set; }
 
         protected override void OnStateChanged(EventArgs e)
         {
@@ -277,6 +287,25 @@ namespace LazyMeter
                         break;
                 }
             }
+        }
+
+        private void TabSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var seriesColection = new SeriesCollection();
+
+            foreach (var log in ApplicationLogList)
+            {
+                var series = new PieSeries
+                {
+                    Title = log.Name,
+                    Values = new ChartValues<ObservableValue> {new ObservableValue(log.RunningTime.Ticks)}
+                };
+
+                seriesColection.Add(series);
+            }
+
+
+            Chart.Series = seriesColection;
         }
     }
 }
