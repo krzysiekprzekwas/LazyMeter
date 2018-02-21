@@ -14,8 +14,8 @@
     </Window.Resources>
     <Grid Width="650" Height="500">
         <TabControl SelectionChanged="TabSelectionChanged">
-            <TabItem Header="Activity" />
-            <TabItem Header="Applications">
+            <TabItem x:Name="ActivityTab" Header="Activity" />
+            <TabItem x:Name="ApplicationsTab" Header="Applications">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
@@ -31,7 +31,7 @@
                     </wpf:PieChart>
                 </Grid>
             </TabItem>
-            <TabItem Header="Details">
+            <TabItem x:Name="DetailsTab" Header="Details">
                 <Grid>
                     <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="406" MinHeight="280" Margin="378,35,0,0" VerticalAlignment="Top" Width="256"/>
                     <Label Content="Current running apps" HorizontalAlignment="Left" Margin="378,4,0,0" VerticalAlignment="Top"/>
