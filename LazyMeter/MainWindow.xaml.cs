@@ -298,7 +298,9 @@ namespace LazyMeter
                 var series = new PieSeries
                 {
                     Title = log.Name,
-                    Values = new ChartValues<ObservableValue> {new ObservableValue(log.RunningTime.Ticks)}
+                    Values = new ChartValues<ObservableValue> {new ObservableValue(log.RunningTime.Ticks)},
+                    DataLabels = true,
+                    LabelPoint = a => TimeSpan.FromTicks((long)a.Y).ToString()
                 };
 
                 seriesColection.Add(series);
