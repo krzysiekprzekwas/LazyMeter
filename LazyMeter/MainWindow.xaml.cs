@@ -114,6 +114,10 @@ namespace LazyMeter
             {
                 Console.WriteLine(exception);
             }
+            catch (ArgumentOutOfRangeException exception)
+            {
+                Console.WriteLine(exception);
+            }
 
             var filteredInstances = instances.Where(x => !FilterUnwantedApp(x));
 

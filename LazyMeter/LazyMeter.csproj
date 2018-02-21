@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ActivityTypeToColorConverter.cs" />
     <Compile Include="Data\ActivityType.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Data\ApplicationLog.cs" />

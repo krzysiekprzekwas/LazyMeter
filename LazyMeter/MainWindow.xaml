@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="LazyTracker"
         SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <local:ActivityTypeToColorConverter x:Key="ActivityTypeToColorConverter"/>
+    </Window.Resources>
     <Grid>
         <Label Content="Current focused app" HorizontalAlignment="Left" Margin="309,4,0,0" VerticalAlignment="Top"/>
         <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="278" MinHeight="280" Margin="309,87,10,0" VerticalAlignment="Top" Width="236"/>
@@ -14,6 +17,7 @@
         <TextBlock x:Name="focusedAppTextBlock" Text="?" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="309,35,0,0" VerticalAlignment="Top"/>
         <TreeView Name="ApplicationsTreeView" Width="300" Margin="0,35,250.857,29.857">
             <TreeView.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
                 <HierarchicalDataTemplate DataType="{x:Type local:ApplicationLog}" ItemsSource="{Binding Members}">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel.ContextMenu>
@@ -35,7 +39,7 @@
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type local:ApplicationInstance}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Background="{Binding Type, Converter={StaticResource ActivityTypeToColorConverter}}">
                         <StackPanel.ContextMenu>
                             <ContextMenu StaysOpen="true">
                                 <MenuItem Header="Set as ...">
