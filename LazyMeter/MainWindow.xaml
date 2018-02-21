@@ -6,70 +6,77 @@
         xmlns:local="clr-namespace:LazyMeter"
         mc:Ignorable="d"
         Title="LazyTracker"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        >
     <Window.Resources>
         <local:ActivityTypeToColorConverter x:Key="ActivityTypeToColorConverter"/>
     </Window.Resources>
-    <Grid>
-        <Label Content="Current focused app" HorizontalAlignment="Left" Margin="309,4,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="278" MinHeight="280" Margin="309,87,10,0" VerticalAlignment="Top" Width="236"/>
-        <Label Content="Current running apps" HorizontalAlignment="Left" Margin="309,56,0,0" VerticalAlignment="Top"/>
-        <TextBlock x:Name="focusedAppTextBlock" Text="?" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="309,35,0,0" VerticalAlignment="Top"/>
-        <TreeView Name="ApplicationsTreeView" Width="300" Margin="0,35,250.857,29.857">
-            <TreeView.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
-                <HierarchicalDataTemplate DataType="{x:Type local:ApplicationLog}" ItemsSource="{Binding Members}">
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel.ContextMenu>
-                            <ContextMenu StaysOpen="true">
-                                <MenuItem Header="Delete" Click="DeleteApplicationLog_Click"/>
-                                <MenuItem Header="Rename" Click="RenameApplicationLog_Click"/>
-                            </ContextMenu>
-                        </StackPanel.ContextMenu>
-                        <TextBlock Text="{Binding Name}" />
-                        <TextBlock Text=" (" Foreground="Green" />
-                        <TextBlock Text="{Binding RunningTime}" Foreground="Green" />
-                        <TextBlock Text=" )" Foreground="Green" />
-                        <TextBlock Text=" (" Foreground="Red" />
-                        <TextBlock Text="{Binding FocusTime}" Foreground="Red" />
-                        <TextBlock Text=" )" Foreground="Red" />
-                        <TextBlock Text=" [" Foreground="Blue" />
-                        <TextBlock Text="{Binding Members.Count}" Foreground="Blue" />
-                        <TextBlock Text="]" Foreground="Blue" />
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type local:ApplicationInstance}">
-                    <StackPanel Orientation="Horizontal" Background="{Binding Type, Converter={StaticResource ActivityTypeToColorConverter}}">
-                        <StackPanel.ContextMenu>
-                            <ContextMenu StaysOpen="true">
-                                <MenuItem Header="Set as ...">
-                                    <MenuItem Header="Fun" Click="SetTypeApplicationLog_Click"/>
-                                    <MenuItem Header="Work" Click="SetTypeApplicationLog_Click"/>
-                                    <MenuItem Header="Univeristy" Click="SetTypeApplicationLog_Click"/>
-                                </MenuItem>
-                                <MenuItem Header="Delete" Click="DeleteApplicationInstance_Click"/>
-                            </ContextMenu>
-                        </StackPanel.ContextMenu>
-                        <TextBlock Text="{Binding Title}" />
-                        <TextBlock Text=" (" Foreground="Green" />
-                        <TextBlock Text="{Binding RunningTime}" Foreground="Green" />
-                        <TextBlock Text=" )" Foreground="Green" />
-                        <TextBlock Text=" (" Foreground="Red" />
-                        <TextBlock Text="{Binding FocusTime}" Foreground="Red" />
-                        <TextBlock Text=" )" Foreground="Red" />
-                    </StackPanel>
-                </DataTemplate>
-            </TreeView.Resources>
-        </TreeView>
-        <Label Content="Running app logs" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top"/>
-        <StatusBar HorizontalAlignment="Stretch"  Margin="0,370,0,0" Height="25" VerticalAlignment="Bottom">
-            <StatusBarItem>
-                <TextBlock Name="lblRunningCount"/>
-            </StatusBarItem>
-            <StatusBarItem >
-                <TextBlock Name="lblLogsCount" />
-            </StatusBarItem>
-        </StatusBar>
+    <Grid Width="650" Height="500">
+        <TabControl>
+            <TabItem Header="Activity" />
+            <TabItem Header="Applications" />
+            <TabItem Header="Details">
+                <Grid>
+                    <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="406" MinHeight="280" Margin="378,35,0,0" VerticalAlignment="Top" Width="256"/>
+                    <Label Content="Current running apps" HorizontalAlignment="Left" Margin="378,4,0,0" VerticalAlignment="Top"/>
+                    <TreeView Name="ApplicationsTreeView" Margin="14,35,271,29.429">
+                        <TreeView.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                            <HierarchicalDataTemplate DataType="{x:Type local:ApplicationLog}" ItemsSource="{Binding Members}">
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.ContextMenu>
+                                        <ContextMenu StaysOpen="true">
+                                            <MenuItem Header="Delete" Click="DeleteApplicationLog_Click"/>
+                                            <MenuItem Header="Rename" Click="RenameApplicationLog_Click"/>
+                                        </ContextMenu>
+                                    </StackPanel.ContextMenu>
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text=" (" Foreground="Green" />
+                                    <TextBlock Text="{Binding RunningTime}" Foreground="Green" />
+                                    <TextBlock Text=" )" Foreground="Green" />
+                                    <TextBlock Text=" (" Foreground="Red" />
+                                    <TextBlock Text="{Binding FocusTime}" Foreground="Red" />
+                                    <TextBlock Text=" )" Foreground="Red" />
+                                    <TextBlock Text=" [" Foreground="Blue" />
+                                    <TextBlock Text="{Binding Members.Count}" Foreground="Blue" />
+                                    <TextBlock Text="]" Foreground="Blue" />
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                            <DataTemplate DataType="{x:Type local:ApplicationInstance}">
+                                <StackPanel Orientation="Horizontal" Background="{Binding Type, Converter={StaticResource ActivityTypeToColorConverter}}">
+                                    <StackPanel.ContextMenu>
+                                        <ContextMenu StaysOpen="true">
+                                            <MenuItem Header="Set as ...">
+                                                <MenuItem Header="Fun" Click="SetTypeApplicationLog_Click"/>
+                                                <MenuItem Header="Work" Click="SetTypeApplicationLog_Click"/>
+                                                <MenuItem Header="Univeristy" Click="SetTypeApplicationLog_Click"/>
+                                            </MenuItem>
+                                            <MenuItem Header="Delete" Click="DeleteApplicationInstance_Click"/>
+                                        </ContextMenu>
+                                    </StackPanel.ContextMenu>
+                                    <TextBlock Text="{Binding Title}" />
+                                    <TextBlock Text=" (" Foreground="Green" />
+                                    <TextBlock Text="{Binding RunningTime}" Foreground="Green" />
+                                    <TextBlock Text=" )" Foreground="Green" />
+                                    <TextBlock Text=" (" Foreground="Red" />
+                                    <TextBlock Text="{Binding FocusTime}" Foreground="Red" />
+                                    <TextBlock Text=" )" Foreground="Red" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </TreeView.Resources>
+                    </TreeView>
+                    <Label Content="Running app logs" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top"/>
+                    <StatusBar HorizontalAlignment="Stretch"  Margin="0,370,0,0" Height="25" VerticalAlignment="Bottom">
+                        <StatusBarItem>
+                            <TextBlock Name="lblRunningCount"/>
+                        </StatusBarItem>
+                        <StatusBarItem >
+                            <TextBlock Name="lblLogsCount" />
+                        </StatusBarItem>
+                    </StatusBar>
 
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
