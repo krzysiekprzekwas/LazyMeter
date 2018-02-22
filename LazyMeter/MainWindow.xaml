@@ -39,11 +39,16 @@
                         <TreeView.Resources>
                             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
                             <HierarchicalDataTemplate DataType="{x:Type local:ApplicationLog}" ItemsSource="{Binding Members}">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Background="{Binding Type, Converter={StaticResource ActivityTypeToColorConverter}}">
                                     <StackPanel.ContextMenu>
                                         <ContextMenu StaysOpen="true">
                                             <MenuItem Header="Delete" Click="DeleteApplicationLog_Click"/>
                                             <MenuItem Header="Rename" Click="RenameApplicationLog_Click"/>
+                                            <MenuItem Header="Set as ...">
+                                                <MenuItem Header="Fun" Click="SetTypeApplicationLog_Click"/>
+                                                <MenuItem Header="Work" Click="SetTypeApplicationLog_Click"/>
+                                                <MenuItem Header="Univeristy" Click="SetTypeApplicationLog_Click"/>
+                                            </MenuItem>
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
                                     <TextBlock Text="{Binding Name}" />
@@ -63,9 +68,9 @@
                                     <StackPanel.ContextMenu>
                                         <ContextMenu StaysOpen="true">
                                             <MenuItem Header="Set as ...">
-                                                <MenuItem Header="Fun" Click="SetTypeApplicationLog_Click"/>
-                                                <MenuItem Header="Work" Click="SetTypeApplicationLog_Click"/>
-                                                <MenuItem Header="Univeristy" Click="SetTypeApplicationLog_Click"/>
+                                                <MenuItem Header="Fun" Click="SetTypeApplicationInstance_Click"/>
+                                                <MenuItem Header="Work" Click="SetTypeApplicationInstance_Click"/>
+                                                <MenuItem Header="Univeristy" Click="SetTypeApplicationInstance_Click"/>
                                             </MenuItem>
                                             <MenuItem Header="Delete" Click="DeleteApplicationInstance_Click"/>
                                         </ContextMenu>

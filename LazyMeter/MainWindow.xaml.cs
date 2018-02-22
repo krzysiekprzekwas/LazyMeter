@@ -146,15 +146,15 @@ namespace LazyMeter
                     }
                     else
                     {
+                        instance.Type = log.Type;
                         log.Members.Add(instance);
                     }
                 }
                 else
                 {
-                    var family2 = new ApplicationLog(instance.ProcessName);
-                    family2.Members.Add(
-                        new ApplicationInstance() {Title = instance.Title, RunningTime = new TimeSpan()});
-                    ApplicationLogList.Add(family2);
+                    var log = new ApplicationLog(instance.ProcessName);
+                    log.Members.Add(instance);
+                    ApplicationLogList.Add(log);
                 }
             }
 
@@ -198,7 +198,8 @@ namespace LazyMeter
                 {
                     Title = x.Current.Name,
                     ClassName = x.Current.ClassName,
-                    ProcessName = Process.GetProcessById(x.Current.ProcessId).ProcessName
+                    ProcessName = Process.GetProcessById(x.Current.ProcessId).ProcessName,
+                    Type = ActivityType.Other
                 });
 
             return apps.ToList();
@@ -258,7 +259,7 @@ namespace LazyMeter
             }
         }
 
-        private void SetTypeApplicationLog_Click(object sender, RoutedEventArgs e)
+        private void SetTypeApplicationInstance_Click(object sender, RoutedEventArgs e)
         {
             if (sender is MenuItem mnu)
             {
@@ -313,6 +314,49 @@ namespace LazyMeter
                 seriesColection.Add(series);
             }
             Chart.Series = seriesColection;
+        }
+
+        private void SetTypeApplicationLog_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem mnu)
+            {
+                var sp = ((ContextMenu)((MenuItem)mnu.Parent).Parent).PlacementTarget as StackPanel;
+
+                var log = (ApplicationLog)sp.DataContext;
+
+                var type = (string)mnu.Header;
+
+                ActivityType typeValue;
+
+                switch (type)
+                {
+                    case "Fun":
+                        typeValue = ActivityType.Fun;
+                        break;
+                    case "Work":
+                        typeValue = ActivityType.Work;
+                        break;
+                    case "Univeristy":
+                        typeValue = ActivityType.Univeristy;
+                        break;
+                    case "Learning":
+                        typeValue = ActivityType.Learning;
+                        break;
+                    default:
+                        typeValue = ActivityType.Other;
+                        break;
+                }
+
+                log.Type = typeValue;
+
+                foreach (var instance in log.Members)
+                {
+                    if (instance.Type == ActivityType.Other)
+                    {
+                        instance.Type = typeValue;
+                    }
+                }
+            }
         }
     }
 }
