@@ -294,7 +294,33 @@ namespace LazyMeter
         {
             if (ApplicationsTab.IsSelected)
                RefreshApplicationChart();
+            else if (ActivityTab.IsSelected)
+                RefreshActivityChart();
             
+        }
+
+        private void RefreshActivityChart()
+        {
+            var seriesColection = new SeriesCollection();
+            
+            var instances = ApplicationLogList.SelectMany(x => x.Members).GroupBy(x => x.Type).Select(g => new {
+                Type = g.Key,
+                Total = g.Sum(x => x.RunningTimeTicks)
+            });
+
+            foreach (var instance in instances)
+            {
+                var series = new PieSeries
+                {
+                    Title = instance.Type.ToString(),
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(instance.Total) },
+                    DataLabels = true,
+                    LabelPoint = a => TimeSpan.FromTicks((long)a.Y).ToString()
+                };
+
+                seriesColection.Add(series);
+            }
+            ActivityChart.Series = seriesColection;
         }
 
         private void RefreshApplicationChart()

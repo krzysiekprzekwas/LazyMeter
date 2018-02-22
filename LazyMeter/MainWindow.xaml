@@ -14,7 +14,22 @@
     </Window.Resources>
     <Grid Width="650" Height="500">
         <TabControl SelectionChanged="TabSelectionChanged">
-            <TabItem x:Name="ActivityTab" Header="Activity" />
+            <TabItem x:Name="ActivityTab" Header="Activity">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <wpf:PieChart x:Name="ActivityChart" Grid.Row="1" LegendLocation="Right" InnerRadius="100" Margin="0 15">
+                        <lvc:PieChart.ChartLegend>
+                            <lvc:DefaultLegend BulletSize="20"></lvc:DefaultLegend>
+                        </lvc:PieChart.ChartLegend>
+                        <wpf:PieChart.DataTooltip>
+                            <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
+                        </wpf:PieChart.DataTooltip>
+                    </wpf:PieChart>
+                </Grid>
+            </TabItem>
             <TabItem x:Name="ApplicationsTab" Header="Applications">
                 <Grid>
                     <Grid.RowDefinitions>
