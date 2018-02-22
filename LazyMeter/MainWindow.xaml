@@ -76,6 +76,9 @@
                                     <TextBlock Text=" [" Foreground="Blue" />
                                     <TextBlock Text="{Binding Members.Count}" Foreground="Blue" />
                                     <TextBlock Text="]" Foreground="Blue" />
+                                    <TextBlock Text=" [" Foreground="Blue" />
+                                    <TextBlock Text="{Binding Type}" Foreground="Blue" />
+                                    <TextBlock Text="]" Foreground="Blue" />
                                 </StackPanel>
                             </HierarchicalDataTemplate>
                             <DataTemplate DataType="{x:Type local:ApplicationInstance}">
@@ -97,6 +100,9 @@
                                     <TextBlock Text=" (" Foreground="Red" />
                                     <TextBlock Text="{Binding FocusTime}" Foreground="Red" />
                                     <TextBlock Text=" )" Foreground="Red" />
+                                    <TextBlock Text=" [" Foreground="Blue" />
+                                    <TextBlock Text="{Binding Type}" Foreground="Blue" />
+                                    <TextBlock Text="]" Foreground="Blue" />
                                 </StackPanel>
                             </DataTemplate>
                         </TreeView.Resources>

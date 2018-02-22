@@ -305,7 +305,7 @@ namespace LazyMeter
             
             var instances = ApplicationLogList.SelectMany(x => x.Members).GroupBy(x => x.Type).Select(g => new {
                 Type = g.Key,
-                Total = g.Sum(x => x.RunningTimeTicks)
+                Total = g.Sum(x => x.FocusTime.Ticks)
             });
 
             foreach (var instance in instances)
@@ -332,7 +332,7 @@ namespace LazyMeter
                 var series = new PieSeries
                 {
                     Title = log.Name,
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(log.RunningTime.Ticks) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(log.FocusTime.Ticks) },
                     DataLabels = true,
                     LabelPoint = a => TimeSpan.FromTicks((long)a.Y).ToString()
                 };
