@@ -384,5 +384,22 @@ namespace LazyMeter
                 }
             }
         }
+
+        private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F5)
+            {
+                var tab = sender as TabItem;
+
+                if ((string)tab.Header == "Applications")
+                {
+                    RefreshApplicationChart();
+                }
+                else if((string)tab.Header == "Activity")
+                {
+                    RefreshActivityChart();
+                }
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@
     </Window.Resources>
     <Grid Width="650" Height="500">
         <TabControl SelectionChanged="TabSelectionChanged">
-            <TabItem x:Name="ActivityTab" Header="Activity">
+            <TabItem x:Name="ActivityTab" Header="Activity"  KeyDown="UIElement_OnKeyDown">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
@@ -30,7 +30,7 @@
                     </wpf:PieChart>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="ApplicationsTab" Header="Applications">
+            <TabItem x:Name="ApplicationsTab" Header="Applications"  KeyDown="UIElement_OnKeyDown">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
