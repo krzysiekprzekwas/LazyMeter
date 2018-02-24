@@ -12,6 +12,18 @@
     <Window.Resources>
         <local:ActivityTypeToColorConverter x:Key="ActivityTypeToColorConverter"/>
     </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Save apps" />
+                <MenuItem Header="Load apps" />
+            </MenuItem>
+            <MenuItem Header="Timer">
+                <MenuItem Header="Stop timer" />
+                <MenuItem Header="Start timer" />
+                <MenuItem Header="Set timer" />
+            </MenuItem>
+        </Menu>
     <Grid Width="650" Height="500">
         <TabControl SelectionChanged="TabSelectionChanged">
             <TabItem x:Name="ActivityTab" Header="Activity"  KeyDown="UIElement_OnKeyDown">
@@ -121,4 +133,5 @@
             </TabItem>
         </TabControl>
     </Grid>
+    </DockPanel>
 </Window>
