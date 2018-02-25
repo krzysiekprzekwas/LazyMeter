@@ -20,7 +20,7 @@
             </MenuItem>
             <MenuItem Header="Timer">
                 <MenuItem x:Name="StopTimerMenu" Header="Stop timer" Click="StopTimer_Click"/>
-                <MenuItem x:Name="StartTimerMenu" Header="Start timer"/>
+                <MenuItem x:Name="StartTimerMenu" Header="Start timer"  Click="StartTimerMenu_OnClick"/>
                 <MenuItem Header="Set timer" />
             </MenuItem>
         </Menu>

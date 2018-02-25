@@ -70,6 +70,9 @@ namespace LazyMeter
             timer2.Tick += timer_Tick2;
             timer2.Start();
 
+            StopTimerMenu.IsEnabled = true;
+            StartTimerMenu.IsEnabled = false;
+
             #region NotifyIcon
 
             var ni = new System.Windows.Forms.NotifyIcon();
@@ -408,6 +411,13 @@ namespace LazyMeter
             timer.Stop();
             StopTimerMenu.IsEnabled = false;
             StartTimerMenu.IsEnabled = true;
+        }
+
+        private void StartTimerMenu_OnClick(object sender, RoutedEventArgs e)
+        {
+            timer.Stop();
+            StopTimerMenu.IsEnabled = true;
+            StartTimerMenu.IsEnabled = false;
         }
     }
 }
