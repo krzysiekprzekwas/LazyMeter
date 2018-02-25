@@ -31,6 +31,7 @@ namespace LazyMeter
         private List<string> IgnoredProcessNames = new List<string> {"LogiOverlay"};
         private List<string> IgnoredNames = new List<string> {"FolderView", "Przełącznik zadań"};
         private List<string> IgnoredClasess = new List<string> {"Progman"};
+        private DispatcherTimer timer;
 
         private static string LOG_PATH = "log.xml";
 
@@ -59,7 +60,7 @@ namespace LazyMeter
 
             ApplicationsTreeView.ItemsSource = ApplicationLogList;
 
-            DispatcherTimer timer = new DispatcherTimer();
+            timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
             timer.Start();
@@ -400,6 +401,13 @@ namespace LazyMeter
                     RefreshActivityChart();
                 }
             }
+        }
+
+        private void StopTimer_Click(object sender, RoutedEventArgs e)
+        {
+            timer.Stop();
+            StopTimerMenu.IsEnabled = false;
+            StartTimerMenu.IsEnabled = true;
         }
     }
 }
