@@ -75,7 +75,9 @@
                                                 <MenuItem Header="Fun" Click="SetTypeApplicationLog_Click"/>
                                                 <MenuItem Header="Work" Click="SetTypeApplicationLog_Click"/>
                                                 <MenuItem Header="Univeristy" Click="SetTypeApplicationLog_Click"/>
-                                            </MenuItem>
+                                                <MenuItem Header="Learning" Click="SetTypeApplicationLog_Click"/>
+                                                <MenuItem Header="Other" Click="SetTypeApplicationLog_Click"/>
+                                                </MenuItem>
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
                                     <TextBlock Text="{Binding Name}" />
@@ -101,7 +103,9 @@
                                                 <MenuItem Header="Fun" Click="SetTypeApplicationInstance_Click"/>
                                                 <MenuItem Header="Work" Click="SetTypeApplicationInstance_Click"/>
                                                 <MenuItem Header="Univeristy" Click="SetTypeApplicationInstance_Click"/>
-                                            </MenuItem>
+                                                <MenuItem Header="Learning" Click="SetTypeApplicationLog_Click"/>
+                                                <MenuItem Header="Other" Click="SetTypeApplicationLog_Click"/>
+                                                </MenuItem>
                                             <MenuItem Header="Delete" Click="DeleteApplicationInstance_Click"/>
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
