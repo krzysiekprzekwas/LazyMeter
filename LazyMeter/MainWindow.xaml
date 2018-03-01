@@ -15,7 +15,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Save apps" />
+                <MenuItem Header="Save apps" Click="SaveLogs_OnClick"/>
                 <MenuItem Header="Load apps" />
             </MenuItem>
             <MenuItem Header="Timer">

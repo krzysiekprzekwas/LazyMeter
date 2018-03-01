@@ -100,8 +100,13 @@ namespace LazyMeter
 
         private void timer_Tick2(object sender, EventArgs e)
         {
+            SaveAppLogs(LOG_PATH);
+        }
+
+        private void SaveAppLogs(string path)
+        {
             XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<ApplicationLog>));
-            using (TextWriter writer = new StreamWriter(LOG_PATH))
+            using (TextWriter writer = new StreamWriter(path))
             {
                 serializer.Serialize(writer, ApplicationLogList);
             }
@@ -418,6 +423,25 @@ namespace LazyMeter
             timer.Stop();
             StopTimerMenu.IsEnabled = true;
             StartTimerMenu.IsEnabled = false;
+        }
+
+        private void SaveLogs_OnClick(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Logs"; // Default file name
+            dlg.DefaultExt = ".xml"; // Default file extension
+            dlg.Filter = "Log files (.xml)|*.xml"; // Filter files by extension
+
+            // Show save file dialog box
+            bool? result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+                SaveAppLogs(filename);
+            }
         }
     }
 }
